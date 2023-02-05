@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+// Documentation https://docs.spring.io/spring-amqp/reference/html/#amqp-abstractions
+
 @Configuration
 public class AmqpConfiguration {
 
