@@ -1,9 +1,11 @@
 package com.rabbit.demo.amqp;
 
 
+import com.rabbit.demo.routingKeys.RoutingKeys;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +17,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmqpConfiguration {
 
+    @Autowired RoutingKeys routingKeys;
+
     @Bean
     public Queue createQueue() {
-        return new Queue("test.publisher", false);
+        return new Queue(routingKeys.ROUTING_KEY_PUBLISHER, false);
 //      return QueueBuilder.nonDurable("test.publisher").build();
     }
 
