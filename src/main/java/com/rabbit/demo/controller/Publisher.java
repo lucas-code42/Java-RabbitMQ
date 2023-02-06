@@ -25,7 +25,7 @@ public class Publisher {
 
     @PostMapping
     public ResponseEntity<?> publisher(@RequestBody PublisherDto content) {
-        String message = "";
+        String message = "null";
 
         try {
             ObjectMapper json = new ObjectMapper();
@@ -36,7 +36,7 @@ public class Publisher {
 
         Message queueMsg = new Message(message.getBytes());
         rabbitTemplate.send(routingKeys.ROUTING_KEY_PUBLISHER, queueMsg);
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok("msg published -> " + message);
     }
 
 }
