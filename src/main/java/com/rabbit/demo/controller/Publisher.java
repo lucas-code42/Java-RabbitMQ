@@ -1,5 +1,7 @@
 package com.rabbit.demo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbit.demo.dto.PublisherDto;
 import com.rabbit.demo.routingKeys.RoutingKeys;
 import org.springframework.amqp.core.Message;
@@ -23,9 +25,18 @@ public class Publisher {
 
     @PostMapping
     public ResponseEntity<?> publisher(@RequestBody PublisherDto content) {
-        Message message = new Message(content.toString().getBytes());
-        rabbitTemplate.send(routingKeys.ROUTING_KEY_PUBLISHER, message);
-        return ResponseEntity.ok(content);
+        String message = "";
+
+        try {
+            ObjectMapper json = new ObjectMapper();
+            message = json.writeValueAsString(content);
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Message queueMsg = new Message(message.getBytes());
+        rabbitTemplate.send(routingKeys.ROUTING_KEY_PUBLISHER, queueMsg);
+        return ResponseEntity.ok(message);
     }
 
 }
